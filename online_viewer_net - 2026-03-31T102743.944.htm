@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrazyGames Unblocked</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #160830;
+  --dark: #0d0520;
+  --card: #1f0f46;
+  --card2: #2a1560;
+  --red: #ff1744;
+  --red2: #ff4060;
+  --accent: #6c35de;
+  --text: #ede8ff;
+  --muted: #7a6a9a;
+  --border: rgba(108,53,222,0.2);
+  --h: 60px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--h);
+  background: rgba(13,5,32,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 18px;
+  z-index: 100;
+}
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.logo-wrap img {
+  height: 34px;
+  border-radius: 5px;
+  display: block;
+}
+
+/* EDGY UNBLOCKED TEXT */
+.logo-unblocked {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.95rem;
+  letter-spacing: 4px;
+  line-height: 1;
+  color: var(--red);
+  position: relative;
+  text-transform: uppercase;
+  /* hard skewed italic feel */
+  transform: skewX(-8deg);
+  display: inline-block;
+  /* layered shadow for depth */
+  text-shadow:
+    0 0 8px rgba(255,23,68,0.9),
+    0 0 22px rgba(255,23,68,0.5),
+    2px 0 0 #7a0010,
+    4px 0 0 #3d0008;
+  /* top/bottom cut lines */
+  -webkit-text-stroke: 0.5px #ff4060;
+}
+/* glitch line overlay */
+.logo-unblocked::before {
+  content: 'UNBLOCKED';
+  position: absolute;
+  inset: 0;
+  color: var(--red2);
+  clip-path: polygon(0 30%, 100% 30%, 100% 45%, 0 45%);
+  transform: translateX(3px);
+  opacity: 0.55;
+  animation: glitch 4s infinite;
+}
+.logo-unblocked::after {
+  content: 'UNBLOCKED';
+  position: absolute;
+  inset: 0;
+  color: #fff;
+  clip-path: polygon(0 60%, 100% 60%, 100% 68%, 0 68%);
+  transform: translateX(-3px);
+  opacity: 0.25;
+  animation: glitch 4s 1.5s infinite;
+}
+@keyframes glitch {
+  0%,90%,100% { transform: translateX(0); opacity: 0; }
+  92% { transform: translateX(3px); opacity: 0.6; }
+  94% { transform: translateX(-3px); opacity: 0.3; }
+  96% { transform: translateX(2px); opacity: 0.5; }
+  98% { transform: translateX(0); opacity: 0; }
+}
+
+.header-search {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+}
+.header-search svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+.header-search input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px 8px 40px;
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.header-search input:focus {
+  border-color: var(--accent);
+  background: rgba(108,53,222,0.08);
+}
+.header-search input::placeholder { color: var(--muted); }
+
+/* MAIN */
+.main {
+  padding-top: calc(var(--h) + 30px);
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 70px;
+}
+
+/* SECTION LABEL */
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label span {
+  display: inline-block;
+  width: 28px;
+  height: 1.5px;
+  background: var(--border);
+}
+
+/* RECENTLY PLAYED */
+#recently-section { display: none; margin-bottom: 36px; }
+.recent-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+.recent-row::-webkit-scrollbar { height: 3px; }
+.recent-row::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+.recent-card {
+  flex-shrink: 0;
+  width: 148px;
+  background: var(--card);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.recent-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 0 0 1.5px var(--red);
+}
+.recent-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: var(--dark);
+}
+.recent-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s;
+}
+.recent-card:hover .recent-thumb img { transform: scale(1.06); }
+.recent-info { padding: 7px 9px 9px; }
+.recent-info .title { font-size: 0.78rem; font-weight: 800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.recent-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.recent-card:hover .recent-play { background: rgba(0,0,0,0.4); }
+.recent-play .btn {
+  width: 34px; height: 34px;
+  background: var(--red);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 2px 12px rgba(255,23,68,0.5);
+}
+.recent-play .btn::after {
+  content: '';
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 2px;
+}
+.recent-card:hover .btn { opacity:1; transform: scale(1); }
+
+/* GAMES GRID */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 12px;
+}
+.game-card {
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.16s, box-shadow 0.16s, border-color 0.16s;
+  position: relative;
+}
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.55), 0 0 0 1.5px var(--red);
+  border-color: var(--red);
+}
+.game-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: var(--dark);
+  position: relative;
+}
+.game-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.22s;
+}
+.game-card:hover .game-thumb img { transform: scale(1.07); }
+.game-thumb .play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.game-card:hover .play-btn { background: rgba(0,0,0,0.38); }
+.play-btn .btn {
+  width: 44px; height: 44px;
+  background: var(--red);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 4px 18px rgba(255,23,68,0.55);
+}
+.btn::after {
+  content: '';
+  border-style: solid;
+  border-width: 7px 0 7px 12px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 3px;
+}
+.game-card:hover .btn { opacity:1; transform: scale(1); }
+.game-info { padding: 9px 11px 11px; }
+.game-info .name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* NO RESULTS */
+.no-results {
+  grid-column: 1/-1;
+  text-align: center;
+  color: var(--muted);
+  padding: 80px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 18px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  text-transform: uppercase;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo-wrap" href="#">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Crazy_Games_Logo.jpg" alt="CrazyGames">
+    <span class="logo-unblocked">Unblocked</span>
+  </a>
+  <div class="header-search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+    <input type="text" id="searchInput" placeholder="Search games…" oninput="filterGames()">
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- RECENTLY PLAYED -->
+  <div id="recently-section">
+    <div class="section-label"><span></span> Recently Played <span></span></div>
+    <div class="recent-row" id="recentRow"></div>
+  </div>
+
+  <!-- ALL GAMES -->
+  <div class="section-label" id="gridLabel-wrap">
+    <span></span> <span id="gridLabel">All Games</span> <span></span>
+  </div>
+  <div class="games-grid" id="gameGrid"></div>
+
+</div>
+
+<footer>Opens in about:blank &mdash; unblocked &amp; unrestricted</footer>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  ADD GAMES HERE
+//
+//  title → name on the card
+//  url   → game link (opens in about:blank)
+//  thumb → thumbnail image URL
+// ═══════════════════════════════════════════════════
+const GAMES = [
+  {
+    title: "Black Hole Idle",
+    url: "https://games.crazygames.com/en_US/black-hole-idle/index.html?czyExpSkipPlayNowOnly_CZY_18027_2=disabled&isNewUser=false&v=1.354",
+    thumb: "https://imgs.crazygames.com/black-hole-idle_1x1/20260130064547/black-hole-idle_1x1-cover?format=auto&quality=70&metadata=none"
+  },
+  {
+    title: "Leek Factory Tycoon",
+    url: "https://games.crazygames.com/en_US/leek-factory-tycoon/index.html?czyExpSkipPlayNowOnly_CZY_18027_2=disabled&isNewUser=false&v=1.354",
+    thumb: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGNZl-QIGbEUrl7g1hJB3porYYPEFE_e9rOQ&s"
+  },
+];
+// ═══════════════════════════════════════════════════
+
+const LS_KEY = "cgub_recent_v2";
+const MAX_RECENT = 10;
+
+function getRecent() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveRecent(game) {
+  let r = getRecent().filter(g => g.title !== game.title);
+  r.unshift({ title: game.title, url: game.url, thumb: game.thumb });
+  localStorage.setItem(LS_KEY, JSON.stringify(r.slice(0, MAX_RECENT)));
+}
+
+function openGame(game) {
+  saveRecent(game);
+  renderRecent();
+  const w = window.open("about:blank", "_blank");
+  const html = `<!DOCTYPE html><html><head><title>${game.title}</title><style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;background:#000}iframe{width:100%;height:100%;border:none;display:block}</style></head><body><iframe src="${game.url}" allowfullscreen></iframe></body></html>`;
+  w.document.write(html);
+  w.document.close();
+}
+
+function fallbackImg(img) {
+  img.style.opacity = '0.3';
+  img.style.filter = 'grayscale(1)';
+}
+
+function renderRecent() {
+  const recent = getRecent();
+  const section = document.getElementById("recently-section");
+  const row = document.getElementById("recentRow");
+  if (!recent.length) { section.style.display = "none"; return; }
+  section.style.display = "block";
+  row.innerHTML = "";
+  recent.forEach(game => {
+    const c = document.createElement("div");
+    c.className = "recent-card";
+    c.onclick = () => openGame(game);
+    c.innerHTML = `
+      <div class="recent-thumb"><img src="${game.thumb}" alt="${game.title}" onerror="fallbackImg(this)"></div>
+      <div class="recent-info"><div class="title">${game.title}</div></div>
+      <div class="recent-play"><div class="btn"></div></div>
+    `;
+    row.appendChild(c);
+  });
+}
+
+function filterGames() {
+  const q = document.getElementById("searchInput").value.toLowerCase().trim();
+  const grid = document.getElementById("gameGrid");
+  document.getElementById("gridLabel").textContent = q ? `"${q}"` : "All Games";
+  grid.innerHTML = "";
+
+  const list = q ? GAMES.filter(g => g.title.toLowerCase().includes(q)) : GAMES;
+
+  if (!list.length) {
+    grid.innerHTML = `<div class="no-results">No games found for "<strong>${q}</strong>"</div>`;
+    return;
+  }
+
+  list.forEach(game => {
+    const c = document.createElement("div");
+    c.className = "game-card";
+    c.onclick = () => openGame(game);
+    c.innerHTML = `
+      <div class="game-thumb">
+        <img src="${game.thumb}" alt="${game.title}" onerror="fallbackImg(this)">
+        <div class="play-btn"><div class="btn"></div></div>
+      </div>
+      <div class="game-info"><div class="name">${game.title}</div></div>
+    `;
+    grid.appendChild(c);
+  });
+}
+
+renderRecent();
+filterGames();
+</script>
+</body>
+</html>
