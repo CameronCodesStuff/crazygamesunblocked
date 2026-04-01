@@ -18,6 +18,7 @@
   --muted: #7a6a9a;
   --border: rgba(108,53,222,0.2);
   --h: 60px;
+  --credits-h: 30px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -63,19 +64,15 @@ header {
   color: var(--red);
   position: relative;
   text-transform: uppercase;
-  /* hard skewed italic feel */
   transform: skewX(-8deg);
   display: inline-block;
-  /* layered shadow for depth */
   text-shadow:
     0 0 8px rgba(255,23,68,0.9),
     0 0 22px rgba(255,23,68,0.5),
     2px 0 0 #7a0010,
     4px 0 0 #3d0008;
-  /* top/bottom cut lines */
   -webkit-text-stroke: 0.5px #ff4060;
 }
-/* glitch line overlay */
 .logo-unblocked::before {
   content: 'UNBLOCKED';
   position: absolute;
@@ -142,9 +139,102 @@ header {
 }
 .header-search input::placeholder { color: var(--muted); }
 
-/* MAIN */
+/* CREDITS BAR */
+.credits-bar {
+  position: fixed;
+  top: var(--h);
+  left: 0;
+  right: 0;
+  height: var(--credits-h);
+  background: rgba(10,4,26,0.98);
+  border-bottom: 1px solid rgba(108,53,222,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  z-index: 99;
+  overflow: hidden;
+}
+.credits-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.credits-inner .sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.credits-inner .label {
+  color: rgba(108,53,222,0.7);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+}
+.credits-inner .name {
+  color: var(--text);
+  opacity: 0.75;
+}
+.credits-inner .creator-name {
+  color: var(--red);
+  opacity: 0.9;
+  text-shadow: 0 0 6px rgba(255,23,68,0.4);
+}
+
+/* OPEN MODE TOGGLE */
+.mode-toggle-wrap {
+  margin-left: auto;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mode-label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.toggle-pill {
+  display: flex;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.toggle-pill button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  color: var(--muted);
+  transition: background 0.15s, color 0.15s;
+}
+.toggle-pill button.active {
+  background: var(--accent);
+  color: #fff;
+}
+.toggle-pill button:not(.active):hover {
+  background: rgba(108,53,222,0.15);
+  color: var(--text);
+}
+
+/* MAIN — offset for header + credits bar */
 .main {
-  padding-top: calc(var(--h) + 30px);
+  padding-top: calc(var(--h) + var(--credits-h) + 30px);
   max-width: 1300px;
   margin: 0 auto;
   padding-left: 24px;
@@ -354,6 +444,28 @@ footer {
   </div>
 </header>
 
+<!-- CREDITS BAR -->
+<div class="credits-bar">
+  <div class="credits-inner">
+    <span class="label">Creator</span>
+    <span class="creator-name">cameroncodesstuff</span>
+    <span class="sep"></span>
+    <span class="label">Testers</span>
+    <span class="name">Josh</span>
+    <span class="sep"></span>
+    <span class="name"> </span>
+    <span class="sep"></span>
+    <span class="name"> </span>
+  </div>
+  <div class="mode-toggle-wrap">
+    <span class="mode-label">Open as</span>
+    <div class="toggle-pill">
+      <button id="btnCloaked" class="active" onclick="setMode('cloaked')">Cloaked</button>
+      <button id="btnDirect" onclick="setMode('direct')">Direct</button>
+    </div>
+  </div>
+</div>
+
 <div class="main">
 
   <!-- RECENTLY PLAYED -->
@@ -375,10 +487,6 @@ footer {
 <script>
 // ═══════════════════════════════════════════════════
 //  ADD GAMES HERE
-//
-//  title → name on the card
-//  url   → game link (opens in about:blank)
-//  thumb → thumbnail image URL
 // ═══════════════════════════════════════════════════
 const GAMES = [
   {
@@ -470,8 +578,23 @@ const GAMES = [
 // ═══════════════════════════════════════════════════
 
 const LS_KEY = "cgub_recent_v2";
+const LS_MODE = "cgub_open_mode";
 const MAX_RECENT = 10;
 
+// ── Open mode ──────────────────────────────────────
+let openMode = localStorage.getItem(LS_MODE) || "cloaked"; // "cloaked" | "direct"
+
+function setMode(mode) {
+  openMode = mode;
+  localStorage.setItem(LS_MODE, mode);
+  document.getElementById("btnCloaked").classList.toggle("active", mode === "cloaked");
+  document.getElementById("btnDirect").classList.toggle("active", mode === "direct");
+}
+
+// init toggle state
+setMode(openMode);
+
+// ── Recent ──────────────────────────────────────────
 function getRecent() {
   try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
   catch { return []; }
@@ -483,9 +606,17 @@ function saveRecent(game) {
   localStorage.setItem(LS_KEY, JSON.stringify(r.slice(0, MAX_RECENT)));
 }
 
+// ── Open ────────────────────────────────────────────
 function openGame(game) {
   saveRecent(game);
   renderRecent();
+
+  if (openMode === "direct") {
+    window.open(game.url, "_blank");
+    return;
+  }
+
+  // cloaked (about:blank)
   const w = window.open("about:blank", "_blank");
   const html = `<!DOCTYPE html><html><head><title>${game.title}</title><style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;background:#000}iframe{width:100%;height:100%;border:none;display:block}</style></head><body><iframe src="${game.url}" allowfullscreen></iframe></body></html>`;
   w.document.write(html);
